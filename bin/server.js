@@ -9,7 +9,7 @@ import ChatGPTClient from '../src/ChatGPTClient.js';
 import ChatGPTBrowserClient from '../src/ChatGPTBrowserClient.js';
 import BingAIClient from '../src/BingAIClient.js';
 
-const arg = process.argv.find((_arg) => _arg.startsWith('--settings'));
+const arg = process.argv.find(_arg => _arg.startsWith('--settings'));
 const path = arg?.split('=')[1] ?? './settings.js';
 
 let settings;
@@ -51,7 +51,7 @@ await server.register(cors, {
 
 server.post('/', async (request, reply) => {
     // Return 200 OK for health checks
-    reply.send('Hello World!');
+    reply.send('OK');
 });
 
 server.post('/conversation', async (request, reply) => {
@@ -143,9 +143,7 @@ server.post('/conversation', async (request, reply) => {
     } else if (settings.apiOptions?.debug) {
         console.debug(error);
     }
-    const message =
-        error?.data?.message ||
-        `There was an error communicating with ${clientToUse === 'bing' ? 'Bing' : 'ChatGPT'}.`;
+    const message = error?.data?.message || `There was an error communicating with ${clientToUse === 'bing' ? 'Bing' : 'ChatGPT'}.`;
     if (body.stream === true) {
         reply.sse({
             id: '',
@@ -171,11 +169,11 @@ server.listen(
             console.error(error);
             process.exit(1);
         }
-    }
+    },
 );
 
 function nextTick() {
-    return new Promise((resolve) => setTimeout(resolve, 0));
+    return new Promise(resolve => setTimeout(resolve, 0));
 }
 
 function getClient(clientToUseForMessage) {
@@ -188,7 +186,7 @@ function getClient(clientToUseForMessage) {
             return new ChatGPTClient(
                 settings.openaiApiKey || settings.chatGptClient.openaiApiKey,
                 settings.chatGptClient,
-                settings.cacheOptions
+                settings.cacheOptions,
             );
         default:
             throw new Error(`Invalid clientToUse: ${clientToUseForMessage}`);
@@ -209,9 +207,9 @@ function filterClientOptions(inputOptions, clientToUseForMessage) {
 
     // If inputOptions.clientToUse is set and is in the whitelist, use it instead of the default
     if (
-        perMessageClientOptionsWhitelist.validClientsToUse &&
-        inputOptions.clientToUse &&
-        perMessageClientOptionsWhitelist.validClientsToUse.includes(inputOptions.clientToUse)
+        perMessageClientOptionsWhitelist.validClientsToUse
+        && inputOptions.clientToUse
+        && perMessageClientOptionsWhitelist.validClientsToUse.includes(inputOptions.clientToUse)
     ) {
         clientToUseForMessage = inputOptions.clientToUse;
     } else {

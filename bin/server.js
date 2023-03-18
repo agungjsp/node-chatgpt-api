@@ -35,9 +35,16 @@ if (settings.storageFilePath && !settings.cacheOptions.store) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
-    if (!fs.existsSync(settings.storageFilePath)) {
-        fs.writeFileSync(settings.storageFilePath, '');
-    }
+    // create a writable stream instead of writing directly
+    const output = fs.createWriteStream(settings.storageFilePath);
+    output.on('error', (err) => {
+        // handle errors
+        console.error(err);
+    });
+    output.on('finish', () => {
+        // do something after writing is done
+        console.log('The file was saved!');
+    });
 
     settings.cacheOptions.store = new KeyvFile({ filename: settings.storageFilePath });
 }

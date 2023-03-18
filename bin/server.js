@@ -171,20 +171,16 @@ server.post('/conversation', async (request, reply) => {
 
 console.log('\nStarting server...');
 
-server.listen(
-    {
-        port: settings.apiOptions?.port || settings.port || 3000,
-        host: settings.apiOptions?.host || 'localhost',
-    },
-    (error) => {
-        if (error) {
-            console.error(error);
-            process.exit(1);
-        }
-    },
-);
+server.listen({ port: settings.apiOptions?.port || settings.port || 3000 }, function (err, address) {
+    if (err) {
+        fastify.log.error(err);
+        process.exit(1);
+    }
 
-console.log(`Server listening on port ${settings.apiOptions?.port || settings.port || 3000}`);
+    // Server is now listening on `address`
+    console.log(`Server listening on port ${address}`);
+});
+
 
 function nextTick() {
     return new Promise(resolve => setTimeout(resolve, 0));

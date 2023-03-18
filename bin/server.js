@@ -12,10 +12,13 @@ import BingAIClient from '../src/BingAIClient.js';
 const arg = process.argv.find(_arg => _arg.startsWith('--settings'));
 const path = arg?.split('=')[1] ?? './settings.js';
 
+console.log(`Using settings file: ${path}`);
+
 let settings;
 if (fs.existsSync(path)) {
     // get the full path
     const fullPath = fs.realpathSync(path);
+    console.log(`Full path: ${fullPath}`);
     settings = (await import(pathToFileURL(fullPath).toString())).default;
 } else {
     if (arg) {
@@ -159,18 +162,11 @@ server.post('/conversation', async (request, reply) => {
     return reply.code(code).send({ error: message });
 });
 
-server.listen(
-    {
-        port: settings.apiOptions?.port || settings.port || 3000,
-        host: settings.apiOptions?.host || 'localhost',
-    },
-    (error) => {
-        if (error) {
-            console.error(error);
-            process.exit(1);
-        }
-    },
-);
+console.log('\nStarting server...');
+
+server.listen(process.env.PORT, () => {
+    console.log(`Server listening on port ${process.env.PORT}`);
+});
 
 function nextTick() {
     return new Promise(resolve => setTimeout(resolve, 0));

@@ -173,7 +173,7 @@ console.log('\nStarting server...');
 
 server.listen({ port: settings.apiOptions?.port || settings.port || 3000 }, function (err, address) {
     if (err) {
-        fastify.log.error(err);
+        server.log.error(err);
         process.exit(1);
     }
 

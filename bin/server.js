@@ -59,7 +59,7 @@ await server.register(cors, {
     origin: '*',
 });
 
-server.post('/', async (request, reply) => {
+server.get('/', async (request, reply) => {
     // Return 200 OK for health checks
     reply.send('OK');
 });
@@ -171,9 +171,20 @@ server.post('/conversation', async (request, reply) => {
 
 console.log('\nStarting server...');
 
-server.listen(process.env.PORT, () => {
-    console.log(`Server listening on port ${process.env.PORT}`);
-});
+server.listen(
+    {
+        port: settings.apiOptions?.port || settings.port || 3000,
+        host: settings.apiOptions?.host || 'localhost',
+    },
+    (error) => {
+        if (error) {
+            console.error(error);
+            process.exit(1);
+        }
+    },
+);
+
+console.log(`Server listening on port ${settings.apiOptions?.port || settings.port || 3000}`);
 
 function nextTick() {
     return new Promise(resolve => setTimeout(resolve, 0));

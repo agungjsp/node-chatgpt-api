@@ -8,6 +8,9 @@ import { KeyvFile } from 'keyv-file';
 import ChatGPTClient from '../src/ChatGPTClient.js';
 import ChatGPTBrowserClient from '../src/ChatGPTBrowserClient.js';
 import BingAIClient from '../src/BingAIClient.js';
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+
+dotenv.config()
 
 const arg = process.argv.find(_arg => _arg.startsWith('--settings'));
 const path = arg?.split('=')[1] ?? './settings.js';
@@ -35,16 +38,9 @@ if (settings.storageFilePath && !settings.cacheOptions.store) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
-    // create a writable stream instead of writing directly
-    const output = fs.createWriteStream(settings.storageFilePath);
-    output.on('error', (err) => {
-        // handle errors
-        console.error(err);
-    });
-    output.on('finish', () => {
-        // do something after writing is done
-        console.log('The file was saved!');
-    });
+    if (!fs.existsSync(settings.storageFilePath)) {
+        fs.writeFileSync(settings.storageFilePath, '');
+    }
 
     settings.cacheOptions.store = new KeyvFile({ filename: settings.storageFilePath });
 }

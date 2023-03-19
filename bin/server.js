@@ -55,10 +55,7 @@ await server.register(cors, {
     origin: '*',
 });
 
-server.get('/', async (request, reply) => {
-    // Return 200 OK for health checks
-    reply.send('OK');
-});
+server.get('/', () => Date.now().toString());
 
 server.post('/conversation', async (request, reply) => {
     const body = request.body || {};

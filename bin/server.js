@@ -5,12 +5,12 @@ import { FastifySSEPlugin } from '@waylaidwanderer/fastify-sse-v2';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
 import { KeyvFile } from 'keyv-file';
+import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import ChatGPTClient from '../src/ChatGPTClient.js';
 import ChatGPTBrowserClient from '../src/ChatGPTBrowserClient.js';
 import BingAIClient from '../src/BingAIClient.js';
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 
-dotenv.config()
+dotenv.config();
 
 const arg = process.argv.find(_arg => _arg.startsWith('--settings'));
 const path = arg?.split('=')[1] ?? './settings.js';
@@ -146,7 +146,9 @@ server.post('/conversation', async (request, reply) => {
     } else if (settings.apiOptions?.debug) {
         console.debug(error);
     }
-    const message = error?.data?.message || `There was an error communicating with ${clientToUse === 'bing' ? 'Bing' : 'ChatGPT'}.`;
+    const message = error?.data?.message
+        || error?.message
+        || `There was an error communicating with ${clientToUse === 'bing' ? 'Bing' : 'ChatGPT'}.`;
     if (body.stream === true) {
         reply.sse({
             id: '',
@@ -164,7 +166,7 @@ server.post('/conversation', async (request, reply) => {
 
 console.log('\nStarting server...');
 
-server.listen({ port: settings.apiOptions?.port || settings.port || 3000 }, function (err, address) {
+server.listen({ port: settings.apiOptions?.port || settings.port || 3000 }, (err, address) => {
     if (err) {
         server.log.error(err);
         process.exit(1);
@@ -173,7 +175,6 @@ server.listen({ port: settings.apiOptions?.port || settings.port || 3000 }, func
     // Server is now listening on `address`
     console.log(`Server listening on port ${address}`);
 });
-
 
 function nextTick() {
     return new Promise(resolve => setTimeout(resolve, 0));

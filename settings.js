@@ -16,9 +16,9 @@ export default {
         modelOptions: {
             // You can override the model name and any other parameters here.
             // The default model is `gpt-3.5-turbo`.
-            model: 'gpt-3.5-turbo-0613',
+            model: 'gpt-3.5-turbo',
             // Set max_tokens here to override the default max_tokens of 1000 for the completion.
-            max_tokens: 4096,
+            max_tokens: 1000,
         },
         // (Optional) Davinci models have a max context length of 4097 tokens, but you may need to change this for other models.
         // maxContextTokens: 4097,

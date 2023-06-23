@@ -16,9 +16,9 @@ export default {
         modelOptions: {
             // You can override the model name and any other parameters here.
             // The default model is `gpt-3.5-turbo`.
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-3.5-turbo-0613',
             // Set max_tokens here to override the default max_tokens of 1000 for the completion.
-            // max_tokens: 1000,
+            max_tokens: 4096,
         },
         // (Optional) Davinci models have a max context length of 4097 tokens, but you may need to change this for other models.
         // maxContextTokens: 4097,
@@ -41,7 +41,7 @@ export default {
         // Necessary for some people in different countries, e.g. China (https://cn.bing.com)
         host: process.env.BING_HOST || 'https://www.bing.com',
         // The "_U" cookie value from bing.com
-        userToken: process.env.BING_TOKEN || '',
+        userToken: process.env.BING_TOKEN || '1DpcRNBcYvxvnQPc-91D-XrPb0opo6yzmNfu_jT5M0TNFMbxGCpQxf6PwBAyrakFpd0TLvhyb7BD8SGSd5PGu9VYLSXPzqJ54ecb-w3PlIwfvJSBhWjiOGCgQkl4AZ7UpSziFfbmPK67FNqLF6El46Jzhe2AV03_O7CvagGRF4US5tvm_y70zc99iB1vjWoONxxXyRuQIrMehOeFOYDkOew',
         // If the above doesn't work, provide all your cookies as a string instead
         cookies: '',
         // A proxy string like "http://<ip>:<port>"
@@ -69,7 +69,7 @@ export default {
         // (Optional) Set to true to enable `console.debug()` logging
         debug: false,
         // (Optional) Possible options: "chatgpt", "chatgpt-browser", "bing". (Default: "chatgpt")
-        clientToUse: 'chatgpt',
+        clientToUse: 'bing',
         // (Optional) Generate titles for each conversation for clients that support it (only ChatGPTClient for now).
         // This will be returned as a `title` property in the first response of the conversation.
         generateTitles: false,

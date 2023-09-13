@@ -16,7 +16,7 @@ export default {
         modelOptions: {
             // You can override the model name and any other parameters here.
             // The default model is `gpt-3.5-turbo`.
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-3.5-turbo-16k',
             // Set max_tokens here to override the default max_tokens of 1000 for the completion.
             max_tokens: 1000,
         },
